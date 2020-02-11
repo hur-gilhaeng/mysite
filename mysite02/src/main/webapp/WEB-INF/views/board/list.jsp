@@ -27,37 +27,29 @@
 						<th>조회수</th>
 						<th>작성일</th>
 						<th>&nbsp;</th>
-					</tr>				
-					<tr>
-						<td>3</td>
-						<td style="text-align:left; padding-left:${0*0 }px">
-							
-							<a href="">세 번째 글입니다.</a></td>
-						<td>안대혁</td>
-						<td>3</td>
-						<td>2015-10-11 12:04:20</td>
-						<td><a href="" class="del">삭제</a></td>
 					</tr>
+					<c:forEach items='${boardlist}' var='b'  varStatus='status'>
 					<tr>
-						<td>2</td>
-						<td style="text-align:left; padding-left:${20*1 }px">
-							<img src='/mysite02/assets/images/reply.png'>
-							<a href="">두 번째 글입니다.</a></td>
-						<td>안대혁</td>
-						<td>3</td>
-						<td>2015-10-02 12:04:12</td>
-						<td><a href="" class="del">삭제</a></td>
+						<td>${b.no }</td>
+						<td style="text-align:left; padding-left:${20*(b.depth) }px">
+							<c:if test='${b.depth>0 }'>
+								<img src='/mysite02/assets/images/reply.png'>
+							</c:if>
+							<a href="">${b.title }</a></td>
+						<td>${b.userName }</td>
+						<td>${b.hit }</td>
+						<td>${b.regDate }</td>
+						<c:choose>
+							<c:when test="${b.userNo == authUser.no }">
+								<td><a href="" class="del">삭제</a></td>
+							</c:when>
+							<c:otherwise>
+								<td>&nbsp;</td>
+							</c:otherwise>
+						</c:choose>
 					</tr>
-					<tr>
-						<td>1</td>
-						<td style="text-align:left; padding-left:${20*2 }px">
-							<img src='/mysite02/assets/images/reply.png'>
-							<a href="">첫 번째 글입니다.</a></td>
-						<td>안대혁</td>
-						<td>3</td>
-						<td>2015-09-25 07:24:32</td>
-						<td><a href="" class="del">삭제</a></td>
-					</tr>
+					</c:forEach>
+					
 				</table>
 				
 				<!-- pager 추가 -->
@@ -74,9 +66,12 @@
 				</div>					
 				<!-- pager 추가 -->
 				
-				<div class="bottom">
-					<a href="${pageContext.request.contextPath }/board?a=write" id="new-book">글쓰기</a>
-				</div>				
+				<c:if test='${not empty authUser }'>
+					<div class="bottom">
+						<a href="${pageContext.request.contextPath }/board?a=writeform" id="new-book">글쓰기</a>
+					</div>
+				</c:if>
+							
 			</div>
 		</div>
 		<c:import url="/WEB-INF/views/includes/navigation.jsp">
