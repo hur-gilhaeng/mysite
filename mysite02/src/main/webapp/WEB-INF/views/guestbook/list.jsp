@@ -49,23 +49,7 @@
 						</table>
 						<br>
 						</c:forEach>
-						
-						<table>
-							<tr>
-								<td>[0]</td>
-								<td>안대혁</td>
-								<td>2015-11-10 11:22:30</td>
-								<td><a href="">삭제</a></td>
-							</tr>
-							<tr>
-								<td colspan=4>
-								안녕하세요. ^^;<br>
-								하하하하	
-								</td>
-							</tr>
-						</table>
-						
-						<br>
+
 					</li>
 				</ul>
 			</div>
