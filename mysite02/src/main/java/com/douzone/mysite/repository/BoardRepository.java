@@ -116,6 +116,60 @@ public class BoardRepository {
 
 		return result;
 	}
+
+	public BoardVo findNo(Long no) {
+		ResultSet rs = null;
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		BoardVo result = new BoardVo();;
+		
+		try {
+			conn = getConnection();
+			String sql = "   select b.title, b.contesnts, b.user_no "+
+						 "     from board b "+
+						 "    where b.no = ? ";
+			pstmt = conn.prepareStatement(sql); 
+			
+			pstmt.setLong(1, no);
+			
+			rs = pstmt.executeQuery(); 
+
+			if (rs.next()) {
+
+				String title = rs.getString(1);
+				String contents = rs.getString(2);
+				Long userNo = rs.getLong(3);
+
+				result.setNo(no);
+				result.setTitle(title);
+				result.setContents(contents);
+				result.setUserNo(userNo);;
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (rs != null) {
+					rs.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return result;
+	}
+
 	
 	private Connection getConnection() throws SQLException{
 		try {

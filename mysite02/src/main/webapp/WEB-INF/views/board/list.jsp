@@ -35,7 +35,7 @@
 							<c:if test='${b.depth>0 }'>
 								<img src='/mysite02/assets/images/reply.png'>
 							</c:if>
-							<a href="">${b.title }</a></td>
+							<a href="${pageContext.servletContext.contextPath }/board?a=view&no=${b.no }">${b.title }</a></td>
 						<td>${b.userName }</td>
 						<td>${b.hit }</td>
 						<td>${b.regDate }</td>
