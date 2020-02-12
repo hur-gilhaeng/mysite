@@ -9,30 +9,32 @@ import javax.servlet.http.HttpSession;
 
 import com.douzone.mysite.repository.BoardRepository;
 import com.douzone.mysite.vo.BoardVo;
-import com.douzone.mysite.vo.UserVo;
 import com.douzone.web.action.Action;
 import com.douzone.web.util.WebUtil;
 
-public class BoardWriteAction implements Action {
+public class BoardModifyAction implements Action {
 
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		
 		HttpSession session = request.getSession();
 		if(session.getAttribute("authUser")!=null) {
-			Long userNo = ((UserVo)session.getAttribute("authUser")).getNo();
-
+			String no = request.getParameter("no");
+			Long getNo = Long.parseLong(no);
+			
 			String title = request.getParameter("title");
 			String content = request.getParameter("content");
 
 			BoardVo vo = new BoardVo();
-
+			vo.setNo(getNo);
 			vo.setTitle(title);
 			vo.setContents(content);
-			vo.setUserNo(userNo);
 
-			new BoardRepository().insert(vo);
+			new BoardRepository().boardUpdate(vo);
+			
+			WebUtil.redirect(request.getContextPath()+"/board?a=view&no="+no, request, response);
+			return;
 		}
-
+		
 		WebUtil.redirect(request.getContextPath()+"/board", request, response);
 	}
 }

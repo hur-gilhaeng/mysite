@@ -169,7 +169,44 @@ public class BoardRepository {
 
 		return result;
 	}
+	
+	public Boolean boardUpdate(BoardVo vo) {
+		Boolean result = false;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = getConnection();
 
+			String sql = "update board set title = ?, contesnts = ?  where no = ? ";
+			
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setString(1, vo.getTitle());
+			pstmt.setString(2, vo.getContents());
+			pstmt.setLong(3, vo.getNo());
+
+			int count = pstmt.executeUpdate();
+			result = count==1;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(conn != null) {
+					conn.close();
+				}
+				if(pstmt != null) {
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return result;
+	}
 	
 	private Connection getConnection() throws SQLException{
 		try {
@@ -185,7 +222,5 @@ public class BoardRepository {
 		return null;
 	}
 
-
-
-
+	
 }

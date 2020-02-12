@@ -13,26 +13,29 @@ import com.douzone.mysite.vo.UserVo;
 import com.douzone.web.action.Action;
 import com.douzone.web.util.WebUtil;
 
-public class BoardWriteAction implements Action {
+public class BoardModifyformAction implements Action {
 
+	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 		HttpSession session = request.getSession();
 		if(session.getAttribute("authUser")!=null) {
 			Long userNo = ((UserVo)session.getAttribute("authUser")).getNo();
-
-			String title = request.getParameter("title");
-			String content = request.getParameter("content");
-
-			BoardVo vo = new BoardVo();
-
-			vo.setTitle(title);
-			vo.setContents(content);
-			vo.setUserNo(userNo);
-
-			new BoardRepository().insert(vo);
+			
+			String no = request.getParameter("no");
+			Long getNo = Long.parseLong(no);
+			
+			BoardVo vb = new BoardRepository().findNo(getNo);
+			
+			if(userNo.equals(vb.getUserNo())) {
+				
+				request.setAttribute("mVo", vb);
+				
+				WebUtil.forward("/WEB-INF/views/board/modify.jsp", request, response);
+				return;
+			}
 		}
-
+		
 		WebUtil.redirect(request.getContextPath()+"/board", request, response);
 	}
+
 }

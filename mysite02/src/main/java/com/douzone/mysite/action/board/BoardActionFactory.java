@@ -16,8 +16,8 @@ public class BoardActionFactory extends ActionFactory {
 			case "write": return new BoardWriteAction();
 			case "delete": return new BoardAction();
 			case "view": return new BoardViewAction();
-			case "modifyform": return new BoardAction();
-			case "modify": return new BoardAction();
+			case "modifyform": return new BoardModifyformAction();
+			case "modify": return new BoardModifyAction();
 
 			default : return new BoardAction();
 		}
