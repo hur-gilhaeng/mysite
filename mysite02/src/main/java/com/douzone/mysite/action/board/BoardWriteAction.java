@@ -47,9 +47,9 @@ public class BoardWriteAction implements Action {
 				vo.setTitle(title);
 				vo.setContents(content);
 				vo.setUserNo(userNo);
-				
-				br.replyInsert(vo);
-				
+				if(!title.isEmpty()) {
+					br.replyInsert(vo);
+				}
 			}
 		}
 		WebUtil.redirect(request.getContextPath()+"/board", request, response);

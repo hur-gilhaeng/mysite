@@ -23,7 +23,7 @@ public class BoardRepository {
 
 			String sql = " insert into board value(null, ?, ?, 0, now(), "
 					+ " (select ifnull(max(b.g_no),0)+1 from board b), "
-					+ " 1, 0, ? )";
+					+ " 1, 0, ?, 1 )";
 
 			pstmt = conn.prepareStatement(sql);
 
@@ -127,7 +127,7 @@ public class BoardRepository {
 		
 		try {
 			conn = getConnection();
-			String sql = "   select b.title, b.contesnts, b.user_no "+
+			String sql = "   select b.title, b.contents, b.user_no "+
 						 "     from board b "+
 						 "    where b.no = ? ";
 			pstmt = conn.prepareStatement(sql); 
@@ -179,7 +179,7 @@ public class BoardRepository {
 		try {
 			conn = getConnection();
 
-			String sql = "update board set title = ?, contesnts = ?  where no = ? ";
+			String sql = "update board set title = ?, contents = ?  where no = ? ";
 			
 			pstmt = conn.prepareStatement(sql);
 
@@ -270,7 +270,7 @@ public class BoardRepository {
 			conn = getConnection();
 
 			String sql = " insert into board value(null, ?, ?, 0, now(), "
-					+ " ?, ?+1, ?+1, ? )";
+					+ " ?, ?+1, ?+1, ?, 1 )";
 
 			pstmt = conn.prepareStatement(sql);
 
