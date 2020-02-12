@@ -18,21 +18,40 @@ public class BoardWriteAction implements Action {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		HttpSession session = request.getSession();
-		if(session.getAttribute("authUser")!=null) {
-			Long userNo = ((UserVo)session.getAttribute("authUser")).getNo();
 
+		if(session.getAttribute("authUser")!=null) {
 			String title = request.getParameter("title");
 			String content = request.getParameter("content");
+			Long userNo = ((UserVo)session.getAttribute("authUser")).getNo();
+			BoardVo vo;
+			
+			String no = request.getParameter("no");
+			if(no.isEmpty()) {
 
-			BoardVo vo = new BoardVo();
+				vo = new BoardVo();
+				vo.setTitle(title);
+				vo.setContents(content);
+				vo.setUserNo(userNo);
 
-			vo.setTitle(title);
-			vo.setContents(content);
-			vo.setUserNo(userNo);
-
-			new BoardRepository().insert(vo);
+				if(!title.isEmpty()) {
+					new BoardRepository().insert(vo);
+				}
+			}
+			else {
+				BoardRepository br = new BoardRepository();
+				Long getNo = Long.parseLong(no);
+				
+				vo = br.findNoTogNo(getNo);
+				br.updateTooNo(vo);
+				
+				vo.setTitle(title);
+				vo.setContents(content);
+				vo.setUserNo(userNo);
+				
+				br.replyInsert(vo);
+				
+			}
 		}
-
 		WebUtil.redirect(request.getContextPath()+"/board", request, response);
 	}
 }

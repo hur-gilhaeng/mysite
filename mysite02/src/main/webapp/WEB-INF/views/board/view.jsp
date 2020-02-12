@@ -39,7 +39,7 @@
 						<a href="${pageContext.request.contextPath }/board?a=modifyform&no=${vb.no}">글수정</a>
 					</c:if>
 					<c:if test="${not empty authUser}">
-						<a href="">답글</a>
+						<a href="${pageContext.request.contextPath }/board?a=writeform&no=${vb.no}">답글</a>
 					</c:if>
 				</div>
 			</div>

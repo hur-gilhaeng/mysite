@@ -66,7 +66,7 @@ public class BoardRepository {
 						 "          b.g_no, b.o_no, b.depth, b.user_no "+
 						 "     from board b "+
 						 "     join user u on b.user_no = u.no "+
-						 " order by no desc ";
+						 " order by g_no desc, o_no asc";
 			pstmt = conn.prepareStatement(sql); 
 
 			rs = pstmt.executeQuery(); 
@@ -208,6 +208,137 @@ public class BoardRepository {
 		return result;
 	}
 	
+	public BoardVo findNoTogNo(Long no) {
+		ResultSet rs = null;
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		BoardVo result = new BoardVo();
+		
+		try {
+			conn = getConnection();
+			String sql = "   select b.g_no, b.o_no, b.depth "+
+						 "     from board b "+
+						 "    where b.no = ? ";
+			pstmt = conn.prepareStatement(sql); 
+			
+			pstmt.setLong(1, no);
+			
+			rs = pstmt.executeQuery(); 
+
+			if (rs.next()) {
+
+				int gNo = rs.getInt(1);
+				int oNo = rs.getInt(2);
+				int depth = rs.getInt(3);
+
+				result.setgNo(gNo);
+				result.setoNo(oNo);
+				result.setDepth(depth);
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (rs != null) {
+					rs.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return result;
+	}
+
+	public Boolean replyInsert(BoardVo vo) {
+		Boolean result = false;
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		try {
+			conn = getConnection();
+
+			String sql = " insert into board value(null, ?, ?, 0, now(), "
+					+ " ?, ?+1, ?+1, ? )";
+
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setString(1, vo.getTitle());
+			pstmt.setString(2, vo.getContents());
+			pstmt.setInt(3, vo.getgNo());
+			pstmt.setInt(4, vo.getoNo());
+			pstmt.setInt(5, vo.getDepth());
+			pstmt.setLong(6, vo.getUserNo());
+
+			int count = pstmt.executeUpdate();
+			result = count==1;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(conn != null) {
+					conn.close();
+				}
+				if(pstmt != null) {
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return result;
+	}
+	
+	public Boolean updateTooNo(BoardVo vo) {
+		Boolean result = false;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = getConnection();
+
+			String sql = "update board set o_no = o_no+1"
+					   + " where g_no = ? and o_no > ?";
+			
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, vo.getgNo());
+			pstmt.setInt(2, vo.getoNo());
+
+			int count = pstmt.executeUpdate();
+			result = count==1;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(conn != null) {
+					conn.close();
+				}
+				if(pstmt != null) {
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+	
 	private Connection getConnection() throws SQLException{
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -222,5 +353,4 @@ public class BoardRepository {
 		return null;
 	}
 
-	
 }

@@ -13,6 +13,10 @@ public class BoardWriteFormAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String no = request.getParameter("no");
+		if(no!=null) { // I don't know to how working
+			request.setAttribute("no",no);
+		}
 		WebUtil.forward("/WEB-INF/views/board/write.jsp", request, response);
 	}
 

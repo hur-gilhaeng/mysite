@@ -12,12 +12,12 @@ public class BoardActionFactory extends ActionFactory {
 		}
 		
 		switch(actionName) {
-			case "writeform": return new BoardWriteFormAction();
-			case "write": return new BoardWriteAction();
-			case "delete": return new BoardAction();
-			case "view": return new BoardViewAction();
-			case "modifyform": return new BoardModifyformAction();
-			case "modify": return new BoardModifyAction();
+			case "writeform": 	return new BoardWriteFormAction();
+			case "write": 		return new BoardWriteAction();
+			case "delete": 		return new BoardAction();
+			case "view": 		return new BoardViewAction();
+			case "modifyform": 	return new BoardModifyformAction();
+			case "modify": 		return new BoardModifyAction();
 
 			default : return new BoardAction();
 		}
