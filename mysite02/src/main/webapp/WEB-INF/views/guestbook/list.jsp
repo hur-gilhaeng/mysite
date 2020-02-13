@@ -38,7 +38,7 @@
 							<tr>
 								<td>[${listCount-status.index}]</td>
 								<td>${gb.name }</td>
-								<td>${gb.regDate }</td>
+								<td>${fn:substring(gb.regDate,0,19)}</td>
 								<td><a href="${pageContext.request.contextPath }/guestbook?a=deleteform&no=${gb.no }">삭제</a></td>
 							</tr>
 							<tr>

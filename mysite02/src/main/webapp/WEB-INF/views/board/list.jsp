@@ -28,28 +28,44 @@
 						<th>작성일</th>
 						<th>&nbsp;</th>
 					</tr>
-					<c:forEach items='${boardlist}' var='b'  varStatus='status'>
-					<tr>
-						<td>${b.no }</td>
-						<td style="text-align:left; padding-left:${20*(b.depth) }px">
-							<c:if test='${b.depth>0 }'>
-								<img src='/mysite02/assets/images/reply.png'>
-							</c:if>
-							<a href="${pageContext.servletContext.contextPath }/board?a=view&no=${b.no }">${b.title }</a></td>
-						<td>${b.userName }</td>
-						<td>${b.hit }</td>
-						<td>${b.regDate }</td>
-						<c:choose>
-							<c:when test="${b.userNo == authUser.no }">
-								<td><a href="" class="del">삭제</a></td>
-							</c:when>
-							<c:otherwise>
-								<td>&nbsp;</td>
-							</c:otherwise>
-						</c:choose>
-					</tr>
+					<c:forEach items='${boardlist}' var='b' varStatus='status'>
+					<c:choose>
+						<c:when test='${!b.shows}'>
+							<tr>
+							<td>&nbsp;</td>
+							<td>삭제된 글입니다</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							</tr>
+						</c:when>
+						<c:otherwise>
+							<tr>
+							<td>${b.no }</td>
+							<td style="text-align:left; padding-left:${20*(b.depth) }px">
+								<c:if test='${b.depth>0 }'>
+									<img src='/mysite02/assets/images/reply.png'>
+								</c:if> 
+								<a href="${pageContext.servletContext.contextPath }/board?a=view&no=${b.no }">
+									${b.title }
+								</a>
+							</td>
+							<td>${b.userName }</td>
+							<td>${b.hit }</td>
+							<td>${fn:substring(b.regDate,0,19)}</td>
+							<c:choose>
+								<c:when test="${b.userNo == authUser.no }">
+									<td><a href="${pageContext.servletContext.contextPath }/board?a=delete&no=${b.no }&uno=${b.userNo}" class="del">삭제</a></td>
+								</c:when>
+								<c:otherwise>
+									<td>&nbsp;</td>
+								</c:otherwise>
+							</c:choose>
+						</tr>
+						</c:otherwise>
+					</c:choose>
 					</c:forEach>
-					
 				</table>
 				
 				<!-- pager 추가 -->
@@ -68,7 +84,9 @@
 				
 				<c:if test='${not empty authUser }'>
 					<div class="bottom">
-						<a href="${pageContext.request.contextPath }/board?a=writeform" id="new-book">글쓰기</a>
+						<a href="${pageContext.request.contextPath }/board?a=writeform" id="new-book">
+							글쓰기
+						</a>
 					</div>
 				</c:if>
 							
