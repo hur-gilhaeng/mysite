@@ -26,7 +26,7 @@ public class BoardWriteAction implements Action {
 			BoardVo vo;
 			
 			String no = request.getParameter("no");
-			if(no!=null&&no!="") {
+			if(no!=null&&(!"".equals(no))) {
 				BoardRepository br = new BoardRepository();
 				Long getNo = Long.parseLong(no);
 				
