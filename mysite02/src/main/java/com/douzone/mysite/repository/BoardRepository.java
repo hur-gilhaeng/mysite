@@ -23,7 +23,7 @@ public class BoardRepository {
 
 			String sql = " insert into board value(null, ?, ?, 0, now(), "
 					+ " (select ifnull(max(b.g_no),0)+1 from board b), "
-					+ " 1, 0, ?, 1 )";
+					+ " 1, 0, ?, true )";
 
 			pstmt = conn.prepareStatement(sql);
 
@@ -63,7 +63,7 @@ public class BoardRepository {
 		try {
 			conn = getConnection();
 			String sql = "   select b.no, b.title, u.name, b.hit, b.reg_date, "+
-						 "          b.g_no, b.o_no, b.depth, b.user_no "+
+						 "          b.g_no, b.o_no, b.depth, b.user_no, b.shows "+
 						 "     from board b "+
 						 "     join user u on b.user_no = u.no "+
 						 " order by g_no desc, o_no asc";
@@ -81,6 +81,7 @@ public class BoardRepository {
 				int oNo = rs.getInt(7);
 				int depth = rs.getInt(8);
 				Long userNo = rs.getLong(9);
+				Boolean shows = rs.getBoolean(10);
 
 				BoardVo vo = new BoardVo();
 				vo.setNo(no);
@@ -91,7 +92,8 @@ public class BoardRepository {
 				vo.setgNo(gNo);
 				vo.setoNo(oNo);
 				vo.setDepth(depth);
-				vo.setUserNo(userNo);;
+				vo.setUserNo(userNo);
+				vo.setShows(shows);
 
 				result.add(vo);
 			}
@@ -270,7 +272,7 @@ public class BoardRepository {
 			conn = getConnection();
 
 			String sql = " insert into board value(null, ?, ?, 0, now(), "
-					+ " ?, ?+1, ?+1, ?, 1 )";
+					+ " ?, ?+1, ?+1, ?, true )";
 
 			pstmt = conn.prepareStatement(sql);
 
@@ -318,6 +320,42 @@ public class BoardRepository {
 
 			pstmt.setInt(1, vo.getgNo());
 			pstmt.setInt(2, vo.getoNo());
+
+			int count = pstmt.executeUpdate();
+			result = count==1;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(conn != null) {
+					conn.close();
+				}
+				if(pstmt != null) {
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+	
+	public Boolean boardDel(Long getNo) {
+		Boolean result = false;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = getConnection();
+
+			String sql = "update board set shows = false"
+					   + " where no = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setLong(1, getNo);
 
 			int count = pstmt.executeUpdate();
 			result = count==1;

@@ -26,18 +26,7 @@ public class BoardWriteAction implements Action {
 			BoardVo vo;
 			
 			String no = request.getParameter("no");
-			if(no.isEmpty()) {
-
-				vo = new BoardVo();
-				vo.setTitle(title);
-				vo.setContents(content);
-				vo.setUserNo(userNo);
-
-				if(!title.isEmpty()) {
-					new BoardRepository().insert(vo);
-				}
-			}
-			else {
+			if(no!=null&&no!="") {
 				BoardRepository br = new BoardRepository();
 				Long getNo = Long.parseLong(no);
 				
@@ -49,6 +38,17 @@ public class BoardWriteAction implements Action {
 				vo.setUserNo(userNo);
 				if(!title.isEmpty()) {
 					br.replyInsert(vo);
+				}
+				
+			}
+			else {
+				vo = new BoardVo();
+				vo.setTitle(title);
+				vo.setContents(content);
+				vo.setUserNo(userNo);
+
+				if(!title.isEmpty()) {
+					new BoardRepository().insert(vo);
 				}
 			}
 		}

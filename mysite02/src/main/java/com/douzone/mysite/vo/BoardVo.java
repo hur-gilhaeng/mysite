@@ -11,6 +11,7 @@ public class BoardVo {
 	private int depth;
 	private Long userNo;
 	private String userName;
+	private Boolean shows;
 
 	public Long getNo() {
 		return no;
@@ -92,13 +93,19 @@ public class BoardVo {
 		this.userName = userName;
 	}
 
+	public Boolean getShows() {
+		return shows;
+	}
+
+	public void setShows(Boolean shows) {
+		this.shows = shows;
+	}
+
 	@Override
 	public String toString() {
-		return "BoardVo [no=" + no + ", title=" + title + 
-				", contents=" + contents + ", hit=" + hit + 
-				", regDate=" + regDate + ", gNo=" + gNo + 
-				", oNo=" + oNo + ", depth=" + depth + 
-				", userNo=" + userNo + ", userName=" + userName + "]";
+		return "BoardVo [no=" + no + ", title=" + title + ", contents=" + contents + ", hit=" + hit + ", regDate="
+				+ regDate + ", gNo=" + gNo + ", oNo=" + oNo + ", depth=" + depth + ", userNo=" + userNo + ", userName="
+				+ userName + ", shows=" + shows + "]";
 	}
 
 }
