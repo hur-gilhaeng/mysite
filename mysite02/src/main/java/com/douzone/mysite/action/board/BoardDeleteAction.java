@@ -24,7 +24,7 @@ public class BoardDeleteAction implements Action {
 			String unoSet = request.getParameter("uno");
 			Long uno = Long.parseLong(unoSet);
 			
-			if(auno == uno) {
+			if(auno == uno) { // 확인 완료시 삭제 작업 진행
 				String no = request.getParameter("no");
 				Long getNo = Long.parseLong(no);
 

@@ -21,6 +21,8 @@ public class BoardViewAction implements Action {
 		
 		BoardRepository br = new BoardRepository();
 		BoardVo vb = br.findNo(getNo);
+		
+		// 조회수 증가
 		br.hitUpdate(getNo);
 		
 		request.setAttribute("vb", vb);

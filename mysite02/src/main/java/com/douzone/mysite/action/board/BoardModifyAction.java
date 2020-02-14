@@ -23,7 +23,7 @@ public class BoardModifyAction implements Action {
 			Long auno = ((UserVo)session.getAttribute("authUser")).getNo();
 			String uno = request.getParameter("uno");
 			Long getUno = Long.parseLong(uno);
-			if(auno == getUno) {
+			if(auno == getUno) { // 확인 완료시 수정작업 진행
 				String no = request.getParameter("no");
 				Long getNo = Long.parseLong(no);
 

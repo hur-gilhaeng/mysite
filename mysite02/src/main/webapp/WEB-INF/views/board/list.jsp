@@ -72,14 +72,15 @@
 				<div class="pager">
 					<ul>
 						<li><a href="">◀</a></li>
-						<li><a href="">1</a></li>
+						<li><a href="${pageContext.servletContext.contextPath }/board?page=${page+1 }">1</a></li>
 						<li class="selected">2</li>
 						<li><a href="">3</a></li>
 						<li>4</li>
 						<li>5</li>
 						<li><a href="">▶</a></li>
 					</ul>
-				</div>					
+					<p>${maxPage }</p>
+				</div>			
 				<!-- pager 추가 -->
 				
 				<c:if test='${not empty authUser }'>

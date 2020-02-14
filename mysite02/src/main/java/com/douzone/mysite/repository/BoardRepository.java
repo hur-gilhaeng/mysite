@@ -119,6 +119,76 @@ public class BoardRepository {
 		return result;
 	}
 
+	public List<BoardVo> findPage(int page) {
+		ResultSet rs = null;
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+
+		List<BoardVo> result = new ArrayList<BoardVo>();
+
+		try {
+			conn = getConnection();
+			String sql = "   select b.no, b.title, u.name, b.hit, b.reg_date, "+
+						 "          b.g_no, b.o_no, b.depth, b.user_no, b.shows "+
+						 "     from board b "+
+						 "     join user u on b.user_no = u.no "+
+						 " order by g_no desc, o_no asc "+
+						 "    limit ?,5";
+			pstmt = conn.prepareStatement(sql); 
+
+			pstmt.setInt(1, ((page)*5));
+			
+			rs = pstmt.executeQuery(); 
+
+			while (rs.next()) {
+				Long no = rs.getLong(1);
+				String title = rs.getString(2);
+				String userName = rs.getString(3);
+				int hit = rs.getInt(4);
+				String regDate = rs.getString(5);
+				int gNo = rs.getInt(6);
+				int oNo = rs.getInt(7);
+				int depth = rs.getInt(8);
+				Long userNo = rs.getLong(9);
+				Boolean shows = rs.getBoolean(10);
+
+				BoardVo vo = new BoardVo();
+				vo.setNo(no);
+				vo.setTitle(title);
+				vo.setUserName(userName);
+				vo.setHit(hit);
+				vo.setRegDate(regDate);
+				vo.setgNo(gNo);
+				vo.setoNo(oNo);
+				vo.setDepth(depth);
+				vo.setUserNo(userNo);
+				vo.setShows(shows);
+
+				result.add(vo);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (rs != null) {
+					rs.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return result;
+	}
+	
 	public BoardVo findNo(Long no) {
 		ResultSet rs = null;
 
@@ -413,6 +483,49 @@ public class BoardRepository {
 		return result;
 	}
 
+	public int ckPage() {
+		ResultSet rs = null;
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		int result = -1;
+		
+		try {
+			conn = getConnection();
+			String sql = "   select count(b.no) "+
+						 "     from board b ";
+			pstmt = conn.prepareStatement(sql); 
+			
+			rs = pstmt.executeQuery(); 
+
+			if (rs.next()) {
+				
+				result = rs.getInt(1);
+				
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (rs != null) {
+					rs.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return result;
+	}
+	
 	private Connection getConnection() throws SQLException{
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -426,5 +539,8 @@ public class BoardRepository {
 		}
 		return null;
 	}
+	
 
+	
+	
 }
