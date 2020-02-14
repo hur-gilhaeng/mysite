@@ -19,6 +19,7 @@ public class BoardDeleteAction implements Action {
 
 		HttpSession session = request.getSession();
 		if(session.getAttribute("authUser")!=null) {
+			// 삭제 작업 전 사용자 확인...
 			Long auno = ((UserVo)session.getAttribute("authUser")).getNo();
 			String unoSet = request.getParameter("uno");
 			Long uno = Long.parseLong(unoSet);

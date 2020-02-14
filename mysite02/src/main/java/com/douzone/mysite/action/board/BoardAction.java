@@ -17,7 +17,7 @@ public class BoardAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String page = request.getParameter("page");
+		//String page = request.getParameter("page");
 		
 		List<BoardVo> boardlist = new BoardRepository().findAll();
 

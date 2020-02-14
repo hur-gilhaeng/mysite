@@ -18,6 +18,7 @@
 				<form class="board-form" method="post" action="${pageContext.request.contextPath }/board">
 					<input type = "hidden" name = "a" value="modify">
 					<input type = "hidden" name = "no" value="${mVo.no }">
+					<input type = "hidden" name = "uno" value="${mVo.userNo }">
 					<table class="tbl-ex">
 						<tr>
 							<th colspan="2">글수정</th>

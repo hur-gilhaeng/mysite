@@ -33,7 +33,7 @@
 						<c:when test='${!b.shows}'>
 							<tr>
 							<td>&nbsp;</td>
-							<td>삭제된 글입니다</td>
+							<td>(작성자에 의해 삭제된 글입니다.)</td>
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>

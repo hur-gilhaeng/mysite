@@ -19,7 +19,9 @@ public class BoardViewAction implements Action {
 		String no = request.getParameter("no");
 		Long getNo = Long.parseLong(no);
 		
-		BoardVo vb = new BoardRepository().findNo(getNo);
+		BoardRepository br = new BoardRepository();
+		BoardVo vb = br.findNo(getNo);
+		br.hitUpdate(getNo);
 		
 		request.setAttribute("vb", vb);
 		

@@ -377,6 +377,42 @@ public class BoardRepository {
 		return result;
 	}
 	
+	public Boolean hitUpdate(Long no) {
+		Boolean result = false;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = getConnection();
+
+			String sql = "update board set hit = hit+1"
+					   + " where no = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setLong(1, no);
+
+			int count = pstmt.executeUpdate();
+			result = count==1;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(conn != null) {
+					conn.close();
+				}
+				if(pstmt != null) {
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+
 	private Connection getConnection() throws SQLException{
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
