@@ -23,7 +23,7 @@ public class BoardRepository {
 
 			String sql = " insert into board value(null, ?, ?, 0, now(), "
 					+ " (select ifnull(max(b.g_no),0)+1 from board b), "
-					+ " 1, 0, ?, true )";
+					+ " 1, 0, ?, 'visible' )";
 
 			pstmt = conn.prepareStatement(sql);
 
@@ -81,7 +81,7 @@ public class BoardRepository {
 				int oNo = rs.getInt(7);
 				int depth = rs.getInt(8);
 				Long userNo = rs.getLong(9);
-				Boolean shows = rs.getBoolean(10);
+				String shows = rs.getString(10);
 
 				BoardVo vo = new BoardVo();
 				vo.setNo(no);
@@ -151,7 +151,7 @@ public class BoardRepository {
 				int oNo = rs.getInt(7);
 				int depth = rs.getInt(8);
 				Long userNo = rs.getLong(9);
-				Boolean shows = rs.getBoolean(10);
+				String shows = rs.getString(10);
 
 				BoardVo vo = new BoardVo();
 				vo.setNo(no);
@@ -332,6 +332,52 @@ public class BoardRepository {
 		return result;
 	}
 
+	public int findDdepth(BoardVo vo) {
+		ResultSet rs = null;
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		int result = 0;
+		
+		try {
+			conn = getConnection();
+			String sql = "   select b.depth "+
+						 "     from board b "+
+						 "    where b.g_no = ? and b.o_no = ? ";
+			pstmt = conn.prepareStatement(sql); 
+			
+			pstmt.setInt(1, vo.getgNo());
+			pstmt.setInt(2, vo.getoNo()+1);
+			
+			rs = pstmt.executeQuery(); 
+
+			if (rs.next()) {
+				
+				result = rs.getInt(1);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (rs != null) {
+					rs.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return result;
+	}
+	
 	public Boolean replyInsert(BoardVo vo) {
 		Boolean result = false;
 
@@ -342,7 +388,7 @@ public class BoardRepository {
 			conn = getConnection();
 
 			String sql = " insert into board value(null, ?, ?, 0, now(), "
-					+ " ?, ?+1, ?+1, ?, true )";
+					+ " ?, ?+1, ?+1, ?, 'visible' )";
 
 			pstmt = conn.prepareStatement(sql);
 
@@ -411,6 +457,43 @@ public class BoardRepository {
 		return result;
 	}
 	
+	public Boolean updateTooNoUp(BoardVo vo) {
+		Boolean result = false;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = getConnection();
+
+			String sql = "update board set o_no = o_no-1"
+					   + " where g_no = ? and o_no > ?";
+			
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setInt(1, vo.getgNo());
+			pstmt.setInt(2, vo.getoNo());
+
+			int count = pstmt.executeUpdate();
+			result = count==1;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(conn != null) {
+					conn.close();
+				}
+				if(pstmt != null) {
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+	
 	public Boolean boardDel(Long getNo) {
 		Boolean result = false;
 		
@@ -420,7 +503,43 @@ public class BoardRepository {
 		try {
 			conn = getConnection();
 
-			String sql = "update board set shows = false"
+			String sql = "update board set shows = 'deleted' "
+					   + " where no = ?";
+			
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setLong(1, getNo);
+
+			int count = pstmt.executeUpdate();
+			result = count==1;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(conn != null) {
+					conn.close();
+				}
+				if(pstmt != null) {
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+	
+	public Boolean boardInvis(Long getNo) {
+		Boolean result = false;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = getConnection();
+
+			String sql = "update board set shows = 'invisible' "
 					   + " where no = ?";
 			
 			pstmt = conn.prepareStatement(sql);
@@ -541,6 +660,4 @@ public class BoardRepository {
 	}
 	
 
-	
-	
 }

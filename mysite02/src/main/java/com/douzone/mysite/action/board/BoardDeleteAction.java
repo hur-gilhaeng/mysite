@@ -23,12 +23,13 @@ public class BoardDeleteAction implements Action {
 			Long auno = ((UserVo)session.getAttribute("authUser")).getNo();
 			String unoSet = request.getParameter("uno");
 			Long uno = Long.parseLong(unoSet);
-			
+			BoardRepository br = new BoardRepository();
+
 			if(auno == uno) { // 확인 완료시 삭제 작업 진행
 				String no = request.getParameter("no");
 				Long getNo = Long.parseLong(no);
 
-				new BoardRepository().boardDel(getNo);
+				br.boardDel(getNo);
 			}
 		}
 

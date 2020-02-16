@@ -11,7 +11,7 @@ public class BoardVo {
 	private int depth;
 	private Long userNo;
 	private String userName;
-	private Boolean shows;
+	private String shows;
 
 	public Long getNo() {
 		return no;
@@ -93,11 +93,11 @@ public class BoardVo {
 		this.userName = userName;
 	}
 
-	public Boolean getShows() {
+	public String getShows() {
 		return shows;
 	}
 
-	public void setShows(Boolean shows) {
+	public void setShows(String shows) {
 		this.shows = shows;
 	}
 

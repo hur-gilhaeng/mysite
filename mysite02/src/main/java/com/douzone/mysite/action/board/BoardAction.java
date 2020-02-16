@@ -33,15 +33,20 @@ public class BoardAction implements Action {
 		
 		else {
 			page = Integer.parseInt(getPage);
+			if(page >  maxPage || page < 1) {
+				WebUtil.redirect(request.getContextPath()+"/board", request, response);
+				return;
+			}
 			boardlist = br.findPage(page-1);
 		}
-		
 		//boardlist = br.findAll();
 
 		request.setAttribute("boardlist", boardlist);
 		request.setAttribute("maxPage", maxPage);
-		if(page >  maxPage) page = 1;
+
 		request.setAttribute("page", page);
+		int pp = (page-1)/5;
+		request.setAttribute("pp", pp);
 		request.setAttribute("pagelist",pageList(page));
 		
 		WebUtil.forward("/WEB-INF/views/board/list.jsp", request, response);
@@ -49,20 +54,15 @@ public class BoardAction implements Action {
 	
 	private int[] pageList(int page) {
 		int[] list = new int[PAGESIZE];
-		
-		if(page<3) {
-			for(int i=0;i<PAGESIZE;i++) {
-				list[i]=i;
-			}
-		}
-		else {
-			list[0]=page-2;
-			list[1]=page-1;
-			list[2]=page;
-			list[3]=page+1;
-			list[4]=page+2;
-		}
-		
+
+		int pagingset = (page-1)/5;
+
+		list[0]=(pagingset*5)+1;
+		list[1]=(pagingset*5)+2;
+		list[2]=(pagingset*5)+3;
+		list[3]=(pagingset*5)+4;
+		list[4]=(pagingset*5)+5;
+
 		return list;
 	}
 }
