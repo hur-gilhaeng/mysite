@@ -41,7 +41,15 @@
 									<td>&nbsp;</td>
 									<td>&nbsp;</td>
 									<td>&nbsp;</td>
-									<td>&nbsp;</td>
+									<c:choose>
+										<c:when test="${b.userNo == authUser.no }">
+											<td><a
+												href="${pageContext.servletContext.contextPath }/board?a=delete&no=${b.no }&uno=${b.userNo}" class="del">삭제</a></td>
+										</c:when>
+										<c:otherwise>
+											<td>&nbsp;</td>
+										</c:otherwise>
+									</c:choose>
 								</tr>
 							</c:when>
 							<c:when test='${b.shows =="visible"}'>
@@ -68,8 +76,6 @@
 									</c:choose>
 								</tr>
 							</c:when>
-							<c:otherwise>
-							</c:otherwise>
 						</c:choose>
 					</c:forEach>
 				</table>

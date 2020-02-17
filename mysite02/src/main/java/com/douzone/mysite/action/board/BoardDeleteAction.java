@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.douzone.mysite.repository.BoardRepository;
+import com.douzone.mysite.vo.BoardVo;
 import com.douzone.mysite.vo.UserVo;
 import com.douzone.web.action.Action;
 import com.douzone.web.util.WebUtil;
@@ -28,8 +29,16 @@ public class BoardDeleteAction implements Action {
 			if(auno == uno) { // 확인 완료시 삭제 작업 진행
 				String no = request.getParameter("no");
 				Long getNo = Long.parseLong(no);
-
-				br.boardDel(getNo);
+				BoardVo vo = new BoardVo();
+				vo = br.findNoTogNo(getNo);
+				int ddepth = br.findDdepth(vo);
+				
+				if(vo.getDepth()<ddepth){
+					br.boardDel(getNo);
+				}else {
+					br.boardInvis(getNo);
+					br.updateTooNoUp(vo);
+				}
 			}
 		}
 

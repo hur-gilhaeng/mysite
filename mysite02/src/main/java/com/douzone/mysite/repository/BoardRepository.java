@@ -133,6 +133,7 @@ public class BoardRepository {
 						 "          b.g_no, b.o_no, b.depth, b.user_no, b.shows "+
 						 "     from board b "+
 						 "     join user u on b.user_no = u.no "+
+						 "    where b.shows='visible' or b.shows='deleted' "+
 						 " order by g_no desc, o_no asc "+
 						 "    limit ?,5";
 			pstmt = conn.prepareStatement(sql); 
@@ -344,7 +345,7 @@ public class BoardRepository {
 			conn = getConnection();
 			String sql = "   select b.depth "+
 						 "     from board b "+
-						 "    where b.g_no = ? and b.o_no = ? ";
+						 "    where b.g_no = ? and b.o_no = ? and shows != 'invisible' ";
 			pstmt = conn.prepareStatement(sql); 
 			
 			pstmt.setInt(1, vo.getgNo());
@@ -613,7 +614,8 @@ public class BoardRepository {
 		try {
 			conn = getConnection();
 			String sql = "   select count(b.no) "+
-						 "     from board b ";
+						 "     from board b "+
+						 "    where shows != 'invisible' ";
 			pstmt = conn.prepareStatement(sql); 
 			
 			rs = pstmt.executeQuery(); 
