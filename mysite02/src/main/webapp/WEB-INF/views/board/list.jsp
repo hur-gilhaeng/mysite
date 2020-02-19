@@ -37,7 +37,12 @@
 							<c:when test='${b.shows =="deleted"}'>
 								<tr>
 									<td>&nbsp;</td>
-									<td>(작성자에 의해 삭제된 글입니다.)</td>
+									<td style="text-align:left; padding-left:${20*(b.depth) }px">
+										<c:if test='${b.depth>0 }'>
+											<img src='/mysite02/assets/images/reply.png'>
+										</c:if>
+										(삭제된 글입니다.)
+									</td>
 									<td>&nbsp;</td>
 									<td>&nbsp;</td>
 									<td>&nbsp;</td>
