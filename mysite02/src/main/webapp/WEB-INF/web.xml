@@ -5,12 +5,16 @@
 	id="WebApp_ID" version="3.1">
 
 	<display-name>mysite02-</display-name>
-	
+
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/applicationContext.xml/</param-value>
 	</context-param>
-	
+
+	<listener>
+		<listener-class>com.douzone.web.listener.ContextLoaderListener</listener-class>
+	</listener>
+
 	<filter>
 		<filter-name>EncodingFilter</filter-name>
 		<filter-class>com.douzone.web.filter.EncodingFilter</filter-class>
