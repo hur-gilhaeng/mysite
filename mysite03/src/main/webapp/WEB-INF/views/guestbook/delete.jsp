@@ -13,7 +13,7 @@
 	<div id="container">
 		<jsp:include page="/WEB-INF/views/includes/header.jsp"/>
 		<div id="content">
-			<div id="guestbook" class="delete">
+			<div id="guestbook" class="delete-form">
 				<form method="post" action="${pageContext.request.contextPath }/guestbook/delete/${no }">
 					<label>비밀번호</label>
 					<input type="password" name="password">

@@ -16,7 +16,7 @@
 		</div>
 		<div id="content">
 			<div id="user">
-				<form id="login" name="login" method="post" action="${pageContext.request.contextPath }/user/login">
+				<form id="login-form" name="login" method="post" action="${pageContext.request.contextPath }/user/login">
 					<label class="block-label" for="email">이메일</label>
 					<input id="email" name="email" type="text" value="${userVo.email }">
 					<label class="block-label" >패스워드</label>

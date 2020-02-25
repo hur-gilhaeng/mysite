@@ -10,14 +10,13 @@
 <link href="${pageContext.request.contextPath }/assets/css/user.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-
 	<div id="container">
 		<div id="header">
 		<jsp:include page="/WEB-INF/views/includes/header.jsp"/>
 		</div>
 		<div id="content">
 			<div id="user">
-				<form id="update" name="update" method="post" action="${pageContext.request.contextPath }/user/update">
+				<form id="join-form" name="update" method="post" action="${pageContext.request.contextPath }/user/update">
 					<label class="block-label" for="name">이름</label>
 					<input id="name" name="name" type="text" value="${profile.name }">
 

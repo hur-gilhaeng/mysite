@@ -8,6 +8,7 @@ import java.sql.SQLException;
 
 import org.springframework.stereotype.Repository;
 
+import com.douzone.mysite.exception.UserRepositoryException;
 import com.douzone.mysite.vo.UserVo;
 
 @Repository
@@ -34,7 +35,7 @@ public class UserRepository {
 			result = count==1;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new UserRepositoryException("error :" + e);
 		} finally {
 			try {
 				if(conn != null) {
@@ -82,7 +83,7 @@ public class UserRepository {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new UserRepositoryException("error :" + e);
 		} finally {
 			try {
 				if (conn != null) {
@@ -134,7 +135,7 @@ public class UserRepository {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new UserRepositoryException("error :" + e);
 		} finally {
 			try {
 				if (conn != null) {
@@ -176,7 +177,7 @@ public class UserRepository {
 			result = count==1;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new UserRepositoryException("error :" + e);
 		} finally {
 			try {
 				if(conn != null) {
@@ -215,7 +216,7 @@ public class UserRepository {
 			result = count==1;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new UserRepositoryException("error :" + e);
 		} finally {
 			try {
 				if(conn != null) {
@@ -254,7 +255,7 @@ public class UserRepository {
 			result = count==1;
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new UserRepositoryException("error :" + e);
 		} finally {
 			try {
 				if(conn != null) {
@@ -272,18 +273,19 @@ public class UserRepository {
 	}
 	
 	private Connection getConnection() throws SQLException{
+		Connection conn = null;
 		try {
 			Class.forName("org.mariadb.jdbc.Driver");
 
 			//String url = "jdbc:mysql://127.0.0.1:3307/webdb";
 			String url = "jdbc:mysql://192.168.1.97:3307/webdb";
-			 
-			return DriverManager.getConnection(url, "webdb", "webdb");
+			
+			conn = DriverManager.getConnection(url, "webdb", "webdb");
 
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			throw new UserRepositoryException("드라이버 로딩 실패 :" + e);
 		}
-		return null;
+		return conn;
 	}
 
 }
