@@ -28,6 +28,7 @@ public class UserController {
 	public String join(UserVo vo){
 		System.out.println(vo);
 		userService.join(vo);
+		System.out.println(vo);
 		return "redirect:/user/joinsuccess";
 	}
 	

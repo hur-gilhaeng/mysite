@@ -1,11 +1,13 @@
 package com.douzone.mysite.repository;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.sql.DataSource;
+
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.douzone.mysite.exception.UserRepositoryException;
@@ -13,145 +15,31 @@ import com.douzone.mysite.vo.UserVo;
 
 @Repository
 public class UserRepository {
+	@Autowired
+	private DataSource dataSource;
+	
+	@Autowired
+	private SqlSession sqlSession;
+	
 	public Boolean insert(UserVo vo) {
+		int count = sqlSession.insert("user.insert", vo);
 		Boolean result = false;
-		
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		
-		try {
-			conn = getConnection();
 
-			String sql = "insert into user value(null, ?, ?, password(?), ?, now())";
-			
-			pstmt = conn.prepareStatement(sql);
-
-			pstmt.setString(1, vo.getName());
-			pstmt.setString(2, vo.getEmail());
-			pstmt.setString(3, vo.getPassword());
-			pstmt.setString(4, vo.getGender());
-
-			int count = pstmt.executeUpdate();
-			result = count==1;
-
-		} catch (SQLException e) {
-			throw new UserRepositoryException("error :" + e);
-		} finally {
-			try {
-				if(conn != null) {
-					conn.close();
-				}
-				if(pstmt != null) {
-					pstmt.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-		
+		result = count==1;
 		return result;
 	}
 	
 	public UserVo findByEmailAndPassword(UserVo inputVo) {
-		UserVo result = null;
 		
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-
-		try {
-			conn = getConnection();
-			String sql =  " select no, name "+ 
-						  "   from user"+
-						  "  where email = ?"+
-						  "    and password = password(?)";
-			pstmt = conn.prepareStatement(sql); 
-			
-			pstmt.setString(1, inputVo.getEmail());
-			pstmt.setString(2, inputVo.getPassword());
-			
-			rs = pstmt.executeQuery(); 
-			
-			if(rs.next()) {
-				Long no = rs.getLong(1);
-				String name = rs.getString(2);
-
-				result = new UserVo();
-				result.setNo(no);
-				result.setName(name);
-
-			}
-
-		} catch (SQLException e) {
-			throw new UserRepositoryException("error :" + e);
-		} finally {
-			try {
-				if (conn != null) {
-					conn.close();
-				}
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (rs != null) {
-					rs.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
+		UserVo result = sqlSession.selectOne("user.findByEmailAndPassword",inputVo);
 		
 		return result;
 	}
 	
 	public UserVo findByNo(Long no) {
-		UserVo result = null;
 		
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-
-		try {
-			conn = getConnection();
-			String sql =  " select name, email, gender"+ 
-						  "   from user"+
-						  "  where no = ?";
-			pstmt = conn.prepareStatement(sql); 
-			
-			pstmt.setLong(1, no);
-			
-			rs = pstmt.executeQuery(); 
-			
-			if(rs.next()) {
-				String name = rs.getString(1);
-				String email = rs.getString(2);
-				String gender = rs.getString(3);
-
-				result = new UserVo();
-				result.setNo(no);
-				result.setName(name);
-				result.setEmail(email);
-				result.setGender(gender);
-			}
-
-		} catch (SQLException e) {
-			throw new UserRepositoryException("error :" + e);
-		} finally {
-			try {
-				if (conn != null) {
-					conn.close();
-				}
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (rs != null) {
-					rs.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
-
+		UserVo result = sqlSession.selectOne("user.findByNo",no);
+		
 		return result;
 	}
 	
@@ -162,7 +50,7 @@ public class UserRepository {
 		PreparedStatement pstmt = null;
 		
 		try {
-			conn = getConnection();
+			conn = dataSource.getConnection();
 
 			String sql = " update user " + 
 					     "    set name = ? " + 
@@ -201,7 +89,7 @@ public class UserRepository {
 		PreparedStatement pstmt = null;
 		
 		try {
-			conn = getConnection();
+			conn = dataSource.getConnection();
 
 			String sql = " update user " + 
 					     "    set password = password(?) " + 
@@ -240,7 +128,7 @@ public class UserRepository {
 		PreparedStatement pstmt = null;
 		
 		try {
-			conn = getConnection();
+			conn = dataSource.getConnection();
 
 			String sql = " update user " + 
 					     "    set gender = ? " + 
@@ -272,20 +160,28 @@ public class UserRepository {
 		return result;
 	}
 	
-	private Connection getConnection() throws SQLException{
-		Connection conn = null;
-		try {
-			Class.forName("org.mariadb.jdbc.Driver");
 
-			//String url = "jdbc:mysql://127.0.0.1:3307/webdb";
-			String url = "jdbc:mysql://192.168.1.97:3307/webdb";
-			
-			conn = DriverManager.getConnection(url, "webdb", "webdb");
+/* 
+ *  conn = getConnection();
+ *  위의 코드를 아래의 코드로 바꾸어 사용
+ *  conn = dataSource.getConnection();
+ *	바꾼 후에 아래의 getConnection()를 제거한다.
+ */
 
-		} catch (ClassNotFoundException e) {
-			throw new UserRepositoryException("드라이버 로딩 실패 :" + e);
-		}
-		return conn;
-	}
+//	private Connection getConnection() throws SQLException{
+//		Connection conn = null;
+//		try {
+//			Class.forName("org.mariadb.jdbc.Driver");
+//
+//			//String url = "jdbc:mysql://127.0.0.1:3307/webdb";
+//			String url = "jdbc:mysql://192.168.1.97:3307/webdb";
+//			
+//			conn = DriverManager.getConnection(url, "webdb", "webdb");
+//
+//		} catch (ClassNotFoundException e) {
+//			throw new UserRepositoryException("드라이버 로딩 실패 :" + e);
+//		}
+//		return conn;
+//	}
 
 }

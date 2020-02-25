@@ -5,9 +5,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.douzone.mysite.exception.GuestbookRepositoryException;
@@ -16,60 +17,67 @@ import com.douzone.mysite.vo.GuestbookVo;
 
 @Repository
 public class GuestbookRepository {
+	
+	@Autowired
+	private SqlSession sqlSession;
+	
 	public List<GuestbookVo> findAll(){
-		ResultSet rs = null;
-
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-
-		List<GuestbookVo> result = new ArrayList<GuestbookVo>();
-
-		try {
-			conn = getConnection();
-			String sql =  "   select g.no, g.name, g.contents, g.password, g.reg_date "+ 
-					      "     from guestbook g "+
-						  " order by no desc ";
-			pstmt = conn.prepareStatement(sql); 
-
-			rs = pstmt.executeQuery(); 
-
-			while (rs.next()) {
-				Long no = rs.getLong(1);
-				String name = rs.getString(2);
-				String contents = rs.getString(3);
-				String password = rs.getString(4);
-				String regDate = rs.getString(5);
-				
-				GuestbookVo vo = new GuestbookVo();
-				vo.setNo(no);
-				vo.setName(name);
-				vo.setContents(contents);
-				vo.setPassword(password);
-				vo.setRegDate(regDate);
-				
-				result.add(vo);
-			}
-
-		} catch (SQLException e) {
-			throw new GuestbookRepositoryException(e.getMessage());
-		} finally {
-			try {
-				if (conn != null) {
-					conn.close();
-				}
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				if (rs != null) {
-					rs.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
+		
+		List<GuestbookVo> result = sqlSession.selectList("guestbook.findAll");
+		
+//		ResultSet rs = null;
+//
+//		Connection conn = null;
+//		PreparedStatement pstmt = null;
+//
+//		List<GuestbookVo> result = new ArrayList<GuestbookVo>();
+//
+//		try {
+//			conn = getConnection();
+//			String sql =  "   select g.no, g.name, g.contents, g.password, g.reg_date "+ 
+//					      "     from guestbook g "+
+//						  " order by no desc ";
+//			pstmt = conn.prepareStatement(sql); 
+//
+//			rs = pstmt.executeQuery(); 
+//
+//			while (rs.next()) {
+//				Long no = rs.getLong(1);
+//				String name = rs.getString(2);
+//				String contents = rs.getString(3);
+//				String password = rs.getString(4);
+//				String regDate = rs.getString(5);
+//				
+//				GuestbookVo vo = new GuestbookVo();
+//				vo.setNo(no);
+//				vo.setName(name);
+//				vo.setContents(contents);
+//				vo.setPassword(password);
+//				vo.setRegDate(regDate);
+//				
+//				result.add(vo);
+//			}
+//
+//		} catch (SQLException e) {
+//			throw new GuestbookRepositoryException(e.getMessage());
+//		} finally {
+//			try {
+//				if (conn != null) {
+//					conn.close();
+//				}
+//				if (pstmt != null) {
+//					pstmt.close();
+//				}
+//				if (rs != null) {
+//					rs.close();
+//				}
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
+//		}
 
 		return result;
-	};
+	}
 
 	public Boolean insert(GuestbookVo vo) {
 		Boolean result = false;
