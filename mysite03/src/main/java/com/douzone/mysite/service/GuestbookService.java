@@ -19,16 +19,15 @@ public class GuestbookService {
 	}
 
 	public Boolean insert(GuestbookVo vo) {
-		return guestbookRepository.insert(vo);
+		return 1==guestbookRepository.insert(vo);
 	}
 
 	public Boolean delete(Long no, String password) {
-		if(guestbookRepository.ckPassword(no, password)) {
-			return guestbookRepository.delete(no);
-		}
-		else {
-			return false;
-		}
+		GuestbookVo vo = new GuestbookVo();
+		vo.setNo(no);
+		vo.setPassword(password);
+		
+		return 1==guestbookRepository.delete(vo);
 	}
 
 }
