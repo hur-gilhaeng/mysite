@@ -18,7 +18,7 @@
 		<div id="content">
 			<div id="board">
 				<form id="search_form"
-					action="${pageContext.servletContext.contextPath }/board?a=search"
+					action="${pageContext.servletContext.contextPath }/board"
 					method="post">
 					<input type="text" id="kwd" name="kwd" value=""> <input
 						type="submit" value="찾기">
@@ -39,7 +39,7 @@
 									<td>&nbsp;</td>
 									<td style="text-align:left; padding-left:${20*(b.depth) }px">
 										<c:if test='${b.depth>0 }'>
-											<img src='/mysite02/assets/images/reply.png'>
+											<img src='/mysite03/assets/images/reply.png'>
 										</c:if>
 										(삭제된 글입니다.)
 									</td>
@@ -48,8 +48,7 @@
 									<td>&nbsp;</td>
 									<c:choose>
 										<c:when test="${b.userNo == authUser.no }">
-											<td><a
-												href="${pageContext.servletContext.contextPath }/board?a=delete&no=${b.no }&uno=${b.userNo}" class="del">삭제</a></td>
+											<td><a href="${pageContext.servletContext.contextPath }/board/delete/${b.no }" class="del">삭제</a></td>
 										</c:when>
 										<c:otherwise>
 											<td>&nbsp;</td>
@@ -62,9 +61,9 @@
 									<td>${b.no }</td>
 									<td style="text-align:left; padding-left:${20*(b.depth) }px">
 										<c:if test='${b.depth>0 }'>
-											<img src='/mysite02/assets/images/reply.png'>
+											<img src='/mysite03/assets/images/reply.png'>
 										</c:if> <a
-										href="${pageContext.servletContext.contextPath }/board?a=view&no=${b.no }">
+										href="${pageContext.servletContext.contextPath }/board/view/${b.no }">
 											${b.title } </a>
 									</td>
 									<td>${b.userName }</td>
@@ -72,8 +71,7 @@
 									<td>${fn:substring(b.regDate,0,19)}</td>
 									<c:choose>
 										<c:when test="${b.userNo == authUser.no }">
-											<td><a
-												href="${pageContext.servletContext.contextPath }/board?a=delete&no=${b.no }&uno=${b.userNo}" class="del">삭제</a></td>
+											<td><a href="${pageContext.servletContext.contextPath }/board/delete/${b.no }" class="del">삭제</a></td>
 										</c:when>
 										<c:otherwise>
 											<td>&nbsp;</td>
@@ -123,7 +121,7 @@
 
 				<c:if test='${not empty authUser }'>
 					<div class="bottom">
-						<a href="${pageContext.request.contextPath }/board?a=writeform" id="new-book"> 글쓰기 </a>
+						<a href="${pageContext.request.contextPath }/board/write" id="new-book"> 글쓰기 </a>
 					</div>
 				</c:if>
 
