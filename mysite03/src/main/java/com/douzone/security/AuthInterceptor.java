@@ -31,7 +31,8 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		
 		// 4. Method에 @Auth가 없다면 Type에 붙어있는지 확인한다.
 		if(auth == null) {
-			//auth = <-
+			// 2020-02-27 과제 정답은 아래 한줄과 같다.
+			auth = handlerMethod.getMethod().getDeclaringClass().getAnnotation(Auth.class);
 		}
 		// 5. Type이나 Method 둘다 @Auth가 적용이 안되어 있는 경우
 		if(auth == null) {
@@ -40,6 +41,8 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		
 		// 6. 인증(Authentification) 여부 확인(@Auth가 붙어있기 때문)
 		HttpSession session = request.getSession();
+		// 위의 코드는 다음과 같다.
+		// HttpSession session = request.getSession(false);
 		if(session == null) {
 			response.sendRedirect(request.getContextPath()+"/user/login");
 			return false;
@@ -61,7 +64,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		
 		// 9. @Auth의 role이 "ADMIN"인 경우
 		//	  authUser의 role이 "ADMIN"인 값 만 허용
-		else if("ADMIN".equals(role)==false) {
+		else if("ADMIN".equals(authUser.getRole())==false) {
 			response.sendRedirect(request.getContextPath());
 			return false;
 		}

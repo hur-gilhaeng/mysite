@@ -12,6 +12,7 @@
 
 	<!-- validator, conversionService, messageConverter를 자동으로 등록 -->
 	<mvc:annotation-driven>
+		<!-- 직접 등록한 @AuthUser UserVo authUser(세션 사용을 없에기 위해 사용됨) -->
 		<mvc:argument-resolvers>
 			<bean class="com.douzone.security.AuthUserHandlerMethodArgumentResolver"/>
 		</mvc:argument-resolvers>
