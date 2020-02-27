@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board">
+
+	<insert id="insert" parameterType="boardvo">
+		<![CDATA[
+		  
+		]]>
+	</insert>
+	
+	<select id="findAll" resultType="boardvo">
+		<![CDATA[
+		    select b.no       as no, 
+		           b.title    as title, 
+		           u.name     as userName, 
+		           b.hit      as hit, 
+		           b.reg_date as regDate, 
+		           b.g_no     as gNo, 
+		           b.o_no     as oNo, 
+		           b.depth    as depth, 
+		           b.user_no  as userNo, 
+		           b.shows    as shows
+		      from board b 
+		      join user u on b.user_no = u.no 
+		  order by g_no desc, o_no asc
+		]]>
+	</select>
+	
+	<select id="findNo" parameterType="long" resultType="boardvo">
+		<![CDATA[
+		   select no, title, contents, user_no as userNo
+		     from board 
+		    where no = #{no }
+		]]>
+	</select>
+	
+	<update id="delete" parameterType="long">
+		<![CDATA[
+		  update board 
+		     set shows = 'deleted' 
+		   where no = #{no }
+		     and user_no = #{userNo }
+		]]>
+	</update>
+	
+</mapper>

@@ -22,24 +22,24 @@
 					</tr>
 					<tr>
 						<td class="label">제목 </td>
-						<td> ${vb.title } </td>
+						<td> ${vo.title } </td>
 					</tr>
 					<tr>
 						<td class="label">내용</td>
 						<td>
 							<div class="view-content">				
-								${fn:replace(vb.contents, newLine,"<br>" )}
+								${fn:replace(vo.contents, newLine,"<br>" )}
 							</div>
 						</td>
 					</tr>
 				</table>
 				<div class="bottom">
 					<a href="${pageContext.request.contextPath }/board">글목록</a>
-					<c:if test="${vb.userNo == authUser.no }">
-						<a href="${pageContext.request.contextPath }/board?a=modifyform&no=${vb.no}">글수정</a>
+					<c:if test="${vo.userNo == authUser.no }">
+						<a href="${pageContext.request.contextPath }/board/modify/${vo.no}">글수정</a>
 					</c:if>
 					<c:if test="${not empty authUser}">
-						<a href="${pageContext.request.contextPath }/board?a=writeform&no=${vb.no}">답글</a>
+						<a href="${pageContext.request.contextPath }/board/reply/${vo.no}">답글</a>
 					</c:if>
 				</div>
 			</div>
