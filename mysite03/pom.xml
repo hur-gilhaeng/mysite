@@ -79,6 +79,19 @@
 			<artifactId>commons-dbcp</artifactId>
 			<version>1.4</version>
 		</dependency>
+		
+	    <!-- common fileupload -->
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.2.1</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>1.4</version>
+		</dependency>
 
 		<!-- Servlet -->
 		<dependency>
@@ -97,6 +110,7 @@
 
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
+		<finalName>mysite03</finalName>
 		<resources>
 			<resource>
 				<directory>${project.basedir}/src/main/resources</directory>
@@ -142,6 +156,7 @@
 					<url>http://192.168.1.97:8080/manager/text</url>
 					<!-- http://127.0.0.1:8080/manager/text -->
 					<path>/mysite03</path>
+					<!-- 윗줄에서 tomcat을 통해 path를 지정함으로 결과적으로 build의 finalName 역할을 하게된다. -->
 					<username>admin</username>
 					<password>admin</password>
 				</configuration>
