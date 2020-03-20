@@ -15,6 +15,9 @@
         http://ehcache-spring-annotations.googlecode.com/svn/schema/ehcache-spring/ehcache-spring-1.1.xsd
         http://www.springframework.org/schema/task 
         http://www.springframework.org/schema/task/spring-task.xsd">
+        
+    <!-- auto proxy -->
+    <aop:aspectj-autoproxy/>
 
 	<context:annotation-config />
 
