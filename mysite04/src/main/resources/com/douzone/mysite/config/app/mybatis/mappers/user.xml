@@ -6,7 +6,7 @@
 		<![CDATA[
 		insert 
 		  into user 
-		values (null, #{name }, #{email }, #{password }, #{gender }, now(), "USER")
+		values (null, #{name }, #{email }, password(#{password }), #{gender }, now(), "USER")
 		]]>
 		<selectKey keyProperty="no" resultType="long" order="AFTER">
 			select last_insert_id()
@@ -18,7 +18,7 @@
 		select no, name, role
 		  from user 
 		 where email = #{email }
-		   and password = #{password }
+		   and password = password(#{password })
 		]]>
 	</select>
 
@@ -27,7 +27,7 @@
 		select no, name
 		  from user 
 		 where email = #{e }
-		   and password = #{p }
+		   and password = password(#{p })
 		]]>
 	</select>
 	
@@ -45,7 +45,7 @@
 				<![CDATA[
 				update user
 				   set name = #{name },
-					   password = #{password },
+					   password = password(#{password }),
 					   gender = #{gender }
 				 where no = #{no }
 				]]>	  

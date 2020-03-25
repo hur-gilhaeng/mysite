@@ -36,7 +36,7 @@
 		<![CDATA[
 		 insert 
 		   into guestbook 
-		 values( null, #{name }, #{contents }, #{password }, now() )
+		 values( null, #{name }, #{contents }, password(#{password }), now() )
 		]]>
 		<selectKey keyProperty="no" resultType="long" order="AFTER">
 			select last_insert_id()
@@ -47,7 +47,7 @@
 		<![CDATA[
 		delete 
 		  from guestbook 
-		 where no = #{no } and password = #{password }
+		 where no = #{no } and password = password(#{password })
 		]]>	
 	</delete>
 </mapper>
