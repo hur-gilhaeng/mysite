@@ -34,21 +34,44 @@
 								<c:when test="${vo.depth > 0 }">
 									<td class="left" style="text-align:left; padding-left:${20*vo.depth }px">
 										<img src="${pageContext.request.contextPath }/assets/images/reply.png">
-										<a href="${pageContext.request.contextPath }/board/view/${vo.no }?p=${map.currentPage }&kwd=${map.keyword }">${vo.title }</a>
+										<c:choose>
+											<c:when test="${vo.shows == 'deleted' }">
+												(삭제된 게시글 입니다.)
+											</c:when>
+											<c:otherwise>
+												<a href="${pageContext.request.contextPath }/board/view/${vo.no }?p=${map.currentPage }&kwd=${map.keyword }">${vo.title }</a>
+											</c:otherwise>
+										</c:choose>
 									</td>
 								</c:when>
 								<c:otherwise>
 									<td class="left" style="text-align:left">
-										<a href="${pageContext.request.contextPath }/board/view/${vo.no }?p=${map.currentPage }&kwd=${map.keyword }">${vo.title }</a>
+										<c:choose>
+											<c:when test="${vo.shows == 'deleted' }">
+												(삭제된 게시글 입니다.)
+											</c:when>
+											<c:otherwise>
+												<a href="${pageContext.request.contextPath }/board/view/${vo.no }?p=${map.currentPage }&kwd=${map.keyword }">${vo.title }</a>
+											</c:otherwise>
+										</c:choose>
 									</td>
 								</c:otherwise>
 							</c:choose>
-							<td>${vo.userName }</td>
-							<td>${vo.hit }</td>
-							<td>${vo.regDate }</td>
+							<c:choose>
+								<c:when test="${vo.shows =='visible'}">
+									<td>${vo.userName }</td>
+									<td>${vo.hit }</td>
+									<td>${vo.regDate }</td>
+								</c:when>
+								<c:otherwise>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+									<td>&nbsp;</td>
+								</c:otherwise>
+							</c:choose>
 							<td>
 								<c:choose>
-									<c:when test="${not empty authUser && authUser.no == vo.userNo }">
+									<c:when test="${not empty authUser && authUser.no == vo.userNo && vo.shows == 'visible' }">
 										<a href="${pageContext.request.contextPath }/board/delete/${vo.no }?p=${map.currentPage }&kwd=${map.keyword }" class="del">삭제</a>
 									</c:when>
 									<c:otherwise>

@@ -44,7 +44,7 @@ public class BoardRepository {
 		map.put( "no", no );
 		map.put( "userNo", userNo );
 		
-		return sqlSession.delete( "board.delete", map );
+		return sqlSession.update( "board.delete", map );
 	}
 
 	public BoardVo findByNo( Long no ) {

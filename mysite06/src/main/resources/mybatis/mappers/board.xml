@@ -17,7 +17,8 @@
 						     from board a ),
 						 1, 
 						 0, 
-						 #{userNo } )
+						 #{userNo }, 
+						 'visible' )
 				]]>
 			</when>
 			<otherwise>
@@ -32,7 +33,8 @@
 						 #{groupNo },
 						 #{orderNo }, 
 						 #{depth }, 
-						 #{userNo } )				
+						 #{userNo },
+						 'visible' )				
 				]]>
 			</otherwise>
 		</choose>
@@ -48,14 +50,14 @@
 		]]>	
 	</update>
 	
-	<delete id="delete" parameterType="map" > 
+	<update id="delete" parameterType="map" > 
 		<![CDATA[
-		delete
-		  from board 
+		update board
+		   set shows='deleted'
 		 where no = #{no }
 		   and user_no = #{userNo }
 		]]>	
-	</delete>
+	</update>
 
 	<select id="findByNo" parameterType="long" resultType="boardvo">
 		<![CDATA[
@@ -92,9 +94,11 @@
 				  		 date_format(a.reg_date, '%Y-%m-%d %p %h:%i:%s') as regDate,
 				  		 a.depth,
 				  		 b.name as userName,
-				  		 a.user_no as userNo
+				  		 a.user_no as userNo,
+				  		 a.shows
 					from board a, user b
 				   where a.user_no = b.no
+				     and a.shows!='invisible'
 				order by g_no desc, o_no asc
 				   limit #{startIndex }, #{size }				
 				]]>
@@ -107,9 +111,11 @@
 				  		 date_format(a.reg_date, '%Y-%m-%d %p %h:%i:%s') as regDate,
 				  		 a.depth, 
 				  		 b.name as userName,
-				  		 a.user_no as userNo
+				  		 a.user_no as userNo,
+				  		 a.shows
 				  	from board a, user b
 				   where a.user_no = b.no
+				     and a.shows!='invisible'
 				     and (title like '%${keyword }%' or contents like '%${keyword }%')
 				order by g_no desc, o_no asc
 				   limit #{startIndex }, #{size }				
@@ -139,14 +145,17 @@
 		<choose>
 			<when test="_parameter == null or _parameter == ''">
 				<![CDATA[
-				select count(*) from board
+				select count(no) 
+				  from board 
+				 where shows='visible' or shows='deleted' 
 				]]>				
 			</when>
 			<otherwise>
 				<![CDATA[
-				select count(*) 
+				select count(no) 
 				  from board
 				 where (title like '%${_parameter }%' or contents like '%${_parameter  }%') 
+				   and (shows='visible' or shows='deleted') 
 				]]>				
 			</otherwise>
 		</choose>	
