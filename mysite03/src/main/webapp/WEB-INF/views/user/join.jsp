@@ -26,8 +26,8 @@ $(function(){
 			dataType: 'json',
 			success: function(response){
 				if(response.result == 'exist'){
-					// alert('존재하는 이메일입니다.'); // 경고창 띄우기
-					$('#msg-checkemail').show();
+					// alert('존재하는 이메일입니다.'); // 알림창 띄우기 (강사님 버전)
+					$('#msg-checkemail').show();  // 메세지 표시하기 
 					$("#email")
 						.val('')
 						.focus();
@@ -75,7 +75,7 @@ $(function(){
 					<form:input path="email"/>
 					<input type="button" id="btn-checkemail" value="이메일확인" >
 					<img id='img-checkemail' style='width:16px; display:none;' src='${pageContext.request.contextPath }/assets/images/check.png' />
-					
+					<!-- 알림창을 띄우는 대신 메세지 표기... -->
 					<p id='msg-checkemail' style="font-weight:bold; color:#f00; text-align:left; padding:0; display:none;" >
 						존재하는 이메일입니다.
 					</p>
