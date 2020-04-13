@@ -15,6 +15,26 @@
 	
 	<!-- validator, conversionService, messageConverter를 자동으로 등록 -->
 	<mvc:annotation-driven>
+		<!-- message-converters를 등록 -->
+ 		<mvc:message-converters>
+ 			<!-- StringHttpMessageConverter: http message 변환, 스트링 타입 지원. -->
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>text/html; charset=UTF-8</value>
+					</list>
+				</property>
+			</bean>
+			<!-- MappingJacksonHttpMessageConverter : 자바 객체와 JSON 문서를 자동변환 해주는 역할 -->
+			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+			   <property name="supportedMediaTypes">
+			       <list>
+			            <value>application/json; charset=UTF-8</value>
+			        </list>
+			   </property>
+			</bean>
+		</mvc:message-converters>
+		
 		<!-- 직접 등록한 @AuthUser UserVo authUser(세션 사용을 없에기 위해 사용됨) -->
 		<mvc:argument-resolvers>
 			<bean class="com.douzone.security.AuthUserHandlerMethodArgumentResolver"/>
