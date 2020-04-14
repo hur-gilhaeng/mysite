@@ -25,7 +25,12 @@ $(function(){
 			data:'',
 			dataType: 'json',
 			success: function(response){
-				if(response.result == 'exist'){
+				if(response.result == "fail"){
+					console.error(response.message);
+					return;
+				}
+				
+				if(response.data == true){
 					// alert('존재하는 이메일입니다.'); // 알림창 띄우기 (강사님 버전)
 					$('#msg-checkemail').show();  // 메세지 표시하기 
 					$("#email")
