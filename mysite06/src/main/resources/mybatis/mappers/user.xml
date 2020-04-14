@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="user">
 
 	<insert id="insert" parameterType="uservo">
 		<![CDATA[
-		insert 
-		  into user 
-		values (null, #{name }, #{email }, password(#{password }), #{gender }, now(), "USER")
+		 insert 
+		   into user 
+		 values (null, #{name }, #{email }, password(#{password }), #{gender }, now(), 'USER')
 		]]>
 		<selectKey keyProperty="no" resultType="long" order="AFTER">
 			select last_insert_id()
@@ -15,50 +16,50 @@
 	
 	<select id="findByEmailAndPassword" parameterType="uservo" resultType="uservo">
 		<![CDATA[
-		select no, name, role
-		  from user 
-		 where email = #{email }
-		   and password = password(#{password })
-		]]>
-	</select>
-
-	<select id="findByEmailAndPassword2" parameterType="map" resultType="uservo">
-		<![CDATA[
-		select no, name
-		  from user 
-		 where email = #{e }
-		   and password = password(#{p })
+		 select no, name, role 
+		   from user  
+		  where email = #{email }    
+		    and password = password(#{password }) 
 		]]>
 	</select>
 	
-	<select id="find" parameterType="long" resultType="uservo">
+	<select id="findByNo" parameterType="long" resultType="uservo">
 		<![CDATA[
-		select no, name, email, gender
-		  from user 
-		 where no = #{no }
+		 select name, email, gender  
+		   from user
+		  where no = #{no }
 		]]>
 	</select>
 	
 	<update id="update" parameterType="uservo">
 		<choose>
 			<when test='password != ""'>
-				<![CDATA[
+			<![CDATA[
 				update user
-				   set name = #{name },
-					   password = password(#{password }),
-					   gender = #{gender }
+				   set name = #{name } ,
+				       password = password(#{password }) ,
+				       gender = #{gender }
 				 where no = #{no }
-				]]>	  
+			]]>
 			</when>
 			<otherwise>
-				<![CDATA[
+			<![CDATA[
 				update user
-				   set name = #{name },
-					   gender = #{gender }
+				   set name = #{name } ,
+				       gender = #{gender }
 				 where no = #{no }
-				]]>			
+			]]>
 			</otherwise>
 		</choose>
 	</update>
+	
+	
+	<select id="findByEmail" parameterType="string" resultType="uservo">
+		<![CDATA[
+		select no
+		  from user 
+		 where email = #{email }
+		]]>
+	</select>
 	
 </mapper>
