@@ -85,4 +85,4 @@ mybatis:
 
 #logging
 logging:
-   config: classpath:logback.xml   
+   config: classpath:logback.xml
