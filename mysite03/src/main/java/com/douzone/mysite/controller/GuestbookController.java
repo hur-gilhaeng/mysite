@@ -52,4 +52,8 @@ public class GuestbookController {
 			return "redirect:/guestbook/delete/"+no;
 	}
 
+	@RequestMapping( "/spa" )
+	public String indexSpa( Model model ){
+		return "guestbook/index-spa";
+	}
 }
